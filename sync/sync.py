@@ -84,7 +84,10 @@ report = collections.defaultdict(list)
 # ---------------------------------------------------------------- descriptions
 def clean_desc(d):
     d = (d or "").replace("\r", "")
-    d = re.sub(r"(?m)^[^\n]*?\(please[^)]*\)\s*(?:\(\d+/\d+\))?[ \t]*", "", d)  # submission-form prompts
+    # submission-form prompts, e.g. "Why is this topic relevant …? (please briefly …) (295/300)",
+    # whether they start a line or sit mid-paragraph
+    d = re.sub(r"(?:(?<=^)|(?<=\n)|(?<=[.!?]))[ \t]*[^.!?\n]*\?\s*\(please[^)]*\)\s*(?:\(\d+/\d+\))?[ \t]*", " ", d)
+    d = re.sub(r"\(please[^)]*\)\s*(?:\(\d+/\d+\))?", "", d)
     d = re.sub(r"\s*\(\d+/\d+\)", "", d)
     rap = None
     m = re.search(r"\s*Rapporteur:\s*(.+?)\s*$", d, re.S)
@@ -365,7 +368,15 @@ def make_patches(a, b):
         if tag == "equal": continue
         sa, sb = "".join(ua[i1:i2]), "".join(ub[j1:j2])
         base = pos_a[i1]
-        if tag == "replace" and len(sa) < 20000 and len(sb) < 20000:
+        if tag == "replace" and i2 - i1 == j2 - j1:
+            # same number of sessions/lines on both sides: diff each pair on its own
+            off = base
+            for ka, kb in zip(ua[i1:i2], ub[j1:j2]):
+                if ka != kb:
+                    for t, k1, k2, l1, l2 in difflib.SequenceMatcher(None, ka, kb, autojunk=False).get_opcodes():
+                        if t != "equal": spans.append([off + k1, off + k2, kb[l1:l2]])
+                off += len(ka)
+        elif tag == "replace" and len(sa) < 20000 and len(sb) < 20000:
             for t, k1, k2, l1, l2 in difflib.SequenceMatcher(None, sa, sb, autojunk=False).get_opcodes():
                 if t != "equal": spans.append([base + k1, base + k2, sb[l1:l2]])
         else:
