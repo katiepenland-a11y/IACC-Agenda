@@ -1,0 +1,275 @@
+# Agenda sync 2026-10-13
+
+Platform: 112 sessions, 468 speaker listings. Embed sessions matched: 112.
+
+Files to update: `_partials/agenda-day-1.html` (8 edits), `_partials/agenda-day-2.html` (3 edits), `_partials/agenda-day-4.html` (2 edits), `js/speakers-data.js` (70 edits), `js/speakers-photos.js` (2 edits), `data/speaker-bios-1.json` (15 edits), `data/speaker-bios-2.json` (33 edits), `data/speaker-bios-3.json` (20 edits), `data/speaker-bios-4.json` (22 edits)
+
+## Session line-ups changed (59)
+- Modernizing the Fight: How to Survive Disinformation Attacks against Your Organization (1.1)
+- Innovation at Work: Tools and Alliances for Human Rights-Based Anti-Corruption Action (1.2)
+- After the U.S. Mid-Term Elections, What's Next? (1.3)
+- Nature, Money, Conflict: How to Disrupt the Financial Drivers of Environmental Crime and Insecurity (1.4)
+- Artificial Intelligence and Emerging Technology: Friends, Foes, or the Future of Business Integrity? (1.5)
+- From Hype to Impact: Harnessing AI for integrity (1.6)
+- The Economics of Crime: Corruption, Organized Crime, and Money Laundering (2.1)
+- Igniting Integrity Against Criminal Capture: Data to Disrupt Corrupt Networks (2.3)
+- Real-World Integrity Solutions for SIDS: Experiences from climate and disaster operations (2.4)
+- Ethics and Business as a Strategic Marriage - Can it work or are there Risks for a Divorce? (2.5)
+- Scaling Public Sector AI with Accountability (2.6)
+- From Stories to Action: Can Young Creators Hold Power Accountable? (2.7)
+- Rhizomic Resistance: How Distributed Civil Society Networks Outmaneuver 21st-Century Kleptocracy (2.8)
+- Citizen Oversight and Reforms to strengthen Judicial Integrity (3.2)
+- Naming the Unnamed: Defining, Documenting, and Measuring Sexual Corruption to Reduce Impunity (3.3)
+- Climate Governance Under the Spotlight: Integrity Lessons from COP31 (3.4)
+- Foreign Influence or Global Kleptocracy? Reassessing the Problem, Rebuilding the Toolkit (3.7)
+- From Values to Value: Measuring Integrity and Compliance Culture in Practice (3.8)
+- Igniting Integrity in Public Decision-Making (9.1)
+- PPPs Critical to Fight Organized Crime and Threat Networks Fueling Global Corruption and Insecurity (4.1)
+- Silencing Integrity: The Hidden Infrastructure of Corruption (4.2)
+- Anti-Corruption as Conflict Prevention: Lessons Learned from Conflict-affected Settings (4.3)
+- Harnessing Artificial Intelligence to Combat Corruption in Government (4.5)
+- Who Benefits from Opaque Debt?: Secrecy and Corruption in Sovereign Lending (5.1)
+- Rewriting the Rules: Global South Solutions for Real Whistleblower Protection (5.2)
+- How Mining and Organized Crime are Transforming the Amazon's Social, Political, and Environmental Landscape? (5.4)
+- The Business Case for Independent and Accountable Justice Systems (5.5)
+- AI vs MA Methodology applied: What Really works to Strengthen Integrity in SMEs (5.6)
+- From Exclusion to Action: Empowering Youth to Combat Corruption and Discrimination in Education and Health Services (5.7)
+- Defending Democracy: Integrity and International Cooperation as a Shield Against Illicit Power (6.1)
+- Silence Is Expensive: How Whistle-blowers Can Expose Tax Corruption (6.2)
+- Security Guarantees, Resource Contracts, and Corruption (6.3)
+- From Reports to Results: Financial Intelligence Units at the Frontline against Dirty Money (7.3)
+- Reversing IFFs: New Strategies, Tactics and Tools (6.8)
+- Cracking Open Capture: Turning Political Windows into Lasting Change (7.1)
+- When Governments and Oligarchs are after you: How to Protect your Staff from Legal bullying (7.2)
+- From Public Funds to Private Capital: How to Follow the Amazon's Money Trail (7.4)
+- Niñas y jóvenes construyendo democracias libres de corrupción (7.5)
+- Investigating Big Tech's Environmental Impact (7.6)
+- Play to Win: Gaming in the Public Interest (7.7)
+- Information as Resistance: Defending Democracy with Integrity, Transparency, and Civic Literacy (8.1)
+- Inclusive Action to Combat Corruption - Centering Marginalized Voices as Integrity Defenders (8.2)
+- Crypto and Illicit Finance: What's Breaking Down, What's Working, and the Path Forward (8.5)
+- Exposing and Removing the Barriers to Protecting our Oceans (8.7)
+- Closed Regimes, Dirty Deals: Leveraging Transnational Accountability Tools Against Kleptocracy (8.8)
+- Environmental and Climate Whistleblowers in an Age of Crisis (9.2)
+- Building effective pathways to redress for victim-survivors of sexual corruption (9.3)
+- Building Trusted Carbon Markets - Views from Anti-Corruption Leaders, Standard Setter, and Accreditation Body (9.4)
+- Targeted Responses: A Sectoral Approach to Beneficial Ownership Transparency (9.5)
+- Reclaiming the Tech Innovation Race: AI and the New Architecture of Democratic Integrity (9.6)
+- Unexpected Coalitions: Collaboration between Anti-Corruption Agencies & Civil Society (9.8)
+- From Silence to Accountability: Building an Intergrity Movement Against Gendered Corruption (1.7)
+- Political Corruption: The Delicate Role that Prosecutors and Judges must play (10.1)
+- Safeguarding Civic Space as a Foundation for Effective Anti-Corruption (10.2)
+- What Kind of Democracy are We Talking about When We Talk about Democracy in the Americas Today? (10.3)
+- Profiting from Destruction: Data Tools Exposing Environmental Crime and Public Contracts (10.4)
+- Promoting Integrity for People and Planet One Sector at a Time (11.4)
+- Who owns it? How corporate ownership information can drive business integrity (11.5)
+- Igniting Youth Action: The Integrity Leaders of Today and Tomorrow (11.7)
+
+## Speakers added (60)
+- Alina Blaga-Smith
+- Altynai Myrzabekova
+- Ana Cláudia Ruy Cardia
+- Ana Revuelta Alonso
+- Andrew Clarke
+- André Duffles
+- Annalee Kotansky
+- Annalise Burkhart
+- Annie Healion
+- Ayse Ozge Erceis
+- Baltazar Vallenilla
+- Benjamin Mirichi
+- Caitlin Maslen
+- Chelsea Dreher
+- Chris Duckett
+- Daniela Cepeda Cuadrado
+- Emilia Berazategui
+- Emily Wegener
+- Emina Nuredinoska
+- Erin Houlihan
+- Fabián Espejo
+- Gabriela Ocampo
+- Graciela Morales
+- Hajira Maryam
+- Idah Knowles Otieno
+- Ignacio Kantor
+- Jasna Ibach
+- Joanna Choblet
+- Johanna Nublat
+- John Hyde
+- Jonathan Bourguignon
+- Jorum Duri
+- Julia Pilgrim
+- Justine Wharton
+- Karina Kalpschtrej
+- Katherine Ellena
+- Krystal Peraza
+- Kush Amin
+- Lauren Jackman
+- Lauren Kitz
+- Leandro Arreagada
+- Leidy Blanco García
+- Lisa Müller
+- Lunick Ramoretli
+- Mai Rosner
+- Marie Terracol
+- Marina Guevara Walker
+- Marina Larin
+- Marina Walker-Guevara
+- Oliver Windridge
+- Phoebe Williams
+- Risa Arai
+- Romain Le Cour Grandmaison
+- Sam Rad
+- Sami Bensassi
+- Samuel Kaninda
+- Sophie Campbell White
+- Vladislav Netyaev
+- Yasmin Fadlallah
+- Zoë Reiter
+
+## Speakers removed (1)
+- Zoe Reiter
+
+## Job titles (7)
+- Arghemar Perez-Sanguinetti: LAC Compliance Lead, Mastercard
+- David Luna: International Coalition Against Illicit Economies (ICAIE)
+- Gustavo Faleiros: Environmental Investigations mentor @ Pulitzer Center
+- Hugh Jorgensen: Policy & Advocacy Coordinator, Transparency International (Corrupt Money Flows, So2)
+- Kristine Baghdasaryan: OSINT Researcher, Transparency International — Russia (in exile)
+- Nina Chanturia: Democratic Governance Officer/ ODIHR Anti-Corruption Focal Point; OSCE/ODIHR
+- Patricia Santana Nina: Representative of CIPAF, which serves as the Secretariat of the Red de Observadores por la Institucionalidad1 (ROI)
+
+## Photos added (1)
+- Zoë Reiter
+
+## Photos removed (1)
+- Zoe Reiter
+
+## Bios added (81)
+- Alina Blaga-Smith
+- Altynai Myrzabekova
+- Ana Cláudia Ruy Cardia
+- Ana Julia Bernardi
+- Ana Revuelta Alonso
+- Andrew Clarke
+- André Duffles
+- Annalee Kotansky
+- Annalise Burkhart
+- Annie Healion
+- Antonio Greco
+- Arkan El Seblani
+- Ayse Ozge Erceis
+- Baltazar Vallenilla
+- Benjamin Mirichi
+- Caitlin Maslen
+- Chelsea Dreher
+- Chris Duckett
+- Daniela Cepeda Cuadrado
+- Daniela Patino Pineros
+- David Luna
+- Eduardo Salcedo-Albarán
+- Emilia Berazategui
+- Emily Wegener
+- Emina Nuredinoska
+- Erin Houlihan
+- Fabián Espejo
+- Fernanda Buffa
+- Gabriela Ocampo
+- Gillian Dell
+- Graciela Morales
+- Hajira Maryam
+- Huma Yusuf
+- Idah Knowles Otieno
+- Ignacio Kantor
+- Ivana Rossi
+- Jasna Ibach
+- Joanna Choblet
+- Johanna Nublat
+- John Hyde
+- Jonathan Bourguignon
+- Jorum Duri
+- Julia Pilgrim
+- Justine Wharton
+- Karina Kalpschtrej
+- Katherine Ellena
+- Kristine Baghdasaryan
+- Krystal Peraza
+- Kush Amin
+- Lauren Jackman
+- Lauren Kitz
+- Leandro Arreagada
+- Leidy Blanco García
+- Lisa Hartevelt
+- Lisa Müller
+- Lunick Ramoretli
+- Madeleine Ngeunga
+- Mai Rosner
+- Marie Terracol
+- Mariia Mamedbekova
+- Marina Guevara Walker
+- Marina Larin
+- Marina Walker Guevara
+- Marina Walker-Guevara
+- María José Veramendi Villa
+- Nina Chanturia
+- Oliver Windridge
+- Pablo Secchi
+- Patricia Santana Nina
+- Phoebe Williams
+- Risa Arai
+- Romain Le Cour Grandmaison
+- Sam Rad
+- Sami Bensassi
+- Samuel Kaninda
+- Sophie Campbell White
+- Thuy Tran
+- Tihomira Kostova
+- Vladislav Netyaev
+- Yasmin Fadlallah
+- Zoë Reiter
+
+## Bios updated (41)
+- Ally Marcella
+- Andrew Rogan
+- Arghemar Perez-Sanguinetti
+- Ayotunde Aboderin
+- Cecilia Muller Torbrand
+- Debra LaPrevotte
+- Duncan Hames
+- Ekin Bayur
+- Estephany Encarnación
+- Francesca Recanatini
+- Gabriel Bourdon-Fattal
+- Gabriel Sipos
+- Gary Kalman
+- Gemma-Maé Hartley
+- Guilherme France
+- Gustavo Faleiros
+- Heather Marquette
+- Hugh Jorgensen
+- Jelter Meers
+- Jim Mintz
+- Joanna Kao
+- Jodi Vittori
+- Jonatan Rodríguez
+- Katja Bechtel
+- Kristen McGeeney
+- Kristen Sample
+- Laura Ferris
+- Leslie Tsai
+- Maria Rosa Darrigo
+- María de los Ángeles Estrada González
+- Micol Martini
+- Nicolás Crow
+- Omar Cuevas
+- Parnneh T. Mallobe
+- Pushpan Murugiah
+- Raphael Kergueno
+- Reinaldo Chaves
+- Roberta Solis
+- Suzanne Hayden
+- Thomas Assam
+- Zakhona Mvelase
+
+## Bios removed (1)
+- Zoe Reiter
