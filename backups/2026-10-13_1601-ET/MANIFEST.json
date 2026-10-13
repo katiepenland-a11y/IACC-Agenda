@@ -1,0 +1,24 @@
+{
+ "taken": "2026-10-13_1601-ET",
+ "site": "https://conference-agenda.lanlan.site/embed",
+ "lanlan_site_id": "df74876f-a0c7-420c-a245-174ec9cde521",
+ "lanlan_deployment_id_to_restore": "08bd82a4-1449-4c1b-9856-06e297cdcea0",
+ "note": "embed.html is the published page; _partials/ were cut out of it and are what the site stores.",
+ "files": {
+  "embed.html": "6b58da1c5914f2e7493a59c244a7d513564a650eaf90eac6a644144ce2430995",
+  "data/speaker-bios-1.json": "a00602cd2d7bf0944244ae89c644201dd71d42e24907d1d2b45e192f7bafb97a",
+  "data/speaker-bios-2.json": "7a0aa6a77c8c69e256b5f16e38f316b5e45d4969dd6a5180f2abb7727ef62fd3",
+  "data/speaker-bios-3.json": "c3a413211284d0fcc9f27ef748ba1495a450fe8f78443cf995649af8dba9b912",
+  "data/speaker-bios-4.json": "a9955e48c382150fc4aab74b124c22d42abbb39df0c6ba283e4546153caf0ed3",
+  "_partials/agenda-day-1.html": "a4ac8f94447a7530a7cd6b2b7b4d88cec23e59685846ea04b0f60962aaa3e0f8",
+  "_partials/agenda-day-2.html": "0d5dac8acad84782a0d43b041691e01c4153e8c5872f42653cfc0706b9790174",
+  "_partials/agenda-day-3.html": "882db6e86df46ca3f79f5d3dde656f96d46a8a08cca3dd8988075a6ca5f541b7",
+  "_partials/agenda-day-4.html": "95332a5f437c4653e5b2d24621e570916cbe13e4c6d0d229649d75953d60054e",
+  "js/agenda.js": "f910ad2ed16a261d62d7d17ed6e3c4bfce9334e9c15f8f90a9b9dd7fda0dabf7",
+  "js/platform-skin.js": "3cde6c310bd4322a8e0142b2f3162b3fa474b6d679ee1698dd08e625bda52b58",
+  "js/speaker-bios.js": "371fa52d0056d274445fd74ff6ed0116bb691ff0e3d0dbf27ad10d352f29dae3",
+  "js/speakers-data.js": "5db328cb5debda7d6bf27a0fe9317348b0bce1a07dde99a8b9cbdf03c619dc0a",
+  "js/speakers-photos.js": "c79c0f42ba78aaa287976589aa9af5bfbcf4464fd4142c801f471f02be42a84b",
+  "js/speakers-view.js": "28d379384fb291b648d1a6ada65f847c18aa5c5b0acebb8957286767d265f382"
+ }
+}
