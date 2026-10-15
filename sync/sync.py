@@ -30,7 +30,7 @@ PARTIALS = [f"_partials/agenda-day-{d}.html" for d in DAYS]
 DATA_FILES = ["js/speakers-data.js", "js/speakers-photos.js"] + [f"data/speaker-bios-{i}.json" for i in range(1, 5)]
 
 TYPE = {"Workshop": "workshop", "Break": "break", "Plenary": "plenary", "Film Festival": "cinema",
-        "Social Event": "networking", "Concert": "concert"}
+        "Social Event": "networking", "Concert": "concert", "High Level Dialogue": "high-level-dialogue"}
 TYPE_LABEL = {v: k for k, v in TYPE.items()}
 PALETTE = ["#F59B00", "#69A525", "#98211E", "#507A8E", "#1EAFE1", "#878278", "#5D7D8F"]
 
