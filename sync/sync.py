@@ -248,7 +248,15 @@ for d in DAYS:
         before = [k for k, li in slots if minutes(li_start(li)) <= m]
         slots.append(((max(before) if before else -1) + 0.5, new_li(e)))
         report["New sessions"].append(f"Day {d}: {' '.join(e['title'].split())} ({clock(st)})")
-    new_files[f"_partials/agenda-day-{d}.html"] = src[:a] + "".join(li for _, li in sorted(slots, key=lambda s: s[0])) + src[b:]
+    # keep the day in start-time order; sessions that start together keep the embed's order
+    slots.sort(key=lambda s: s[0])
+    latest = -1
+    for _, li in slots:
+        if minutes(li_start(li)) < latest:
+            report["Order"].append(f"Day {d}: {' '.join(li_title(li).split())} ({li_start(li)}) moved up to its start time")
+        latest = max(latest, minutes(li_start(li)))
+    slots.sort(key=lambda s: minutes(li_start(s[1])))
+    new_files[f"_partials/agenda-day-{d}.html"] = src[:a] + "".join(li for _, li in slots) + src[b:]
 
 if len(report["Removed sessions"]) + len(report["New sessions"]) > max(10, 0.15 * live_sessions):
     write(f"{W}/report.md", "# Sync refused\n\nToo many sessions would be added or removed at once — check the platform.\n\n"
@@ -418,7 +426,7 @@ if not patches:
     lines.append("No differences: the embed already matches iacc.conference.tc.")
 else:
     lines.append("Files to update: " + ", ".join(f"`{p}` ({len(v)} edits)" for p, v in patches.items()))
-    for k in ["Times", "Titles", "New sessions", "Removed sessions", "Descriptions", "Session line-ups changed",
+    for k in ["Times", "Order", "Titles", "New sessions", "Removed sessions", "Descriptions", "Session line-ups changed",
               "Speakers added", "Speakers removed", "Job titles", "Photos added", "Photos changed", "Photos removed",
               "Bios added", "Bios updated", "Bios removed"]:
         if report[k]:
