@@ -1,4 +1,4 @@
-"""Cut _partials/agenda-day-N.html out of the published embed page.
+"""Cut _partials/agenda-day-N.html and _partials/agenda-filters.html out of the published embed page.
 
 The embed page is embed.html with the day partials pasted in verbatim, so each
 partial is the <div class="day-panel" id="panel-N">…</ol></div> block plus the
@@ -15,4 +15,8 @@ for d in range(1, 5):
     block = page[m.start(): end + len("</ol></div>")]
     if block.count('<div class="day-panel') != 1: sys.exit(f"panel-{d} boundaries look wrong")
     open(f"{live}/_partials/agenda-day-{d}.html", "w", encoding="utf-8").write(block + "\n")
-print("embed: 4 day partials extracted")
+a = page.find('<div class="agenda-filters">')
+b = page.find("\n</div>\n", page.find('class="filter-status"', a))
+if a < 0 or b < 0: sys.exit("filter bar not found in the embed page")
+open(f"{live}/_partials/agenda-filters.html", "w", encoding="utf-8").write(page[a: b + len("\n</div>\n")])
+print("embed: 4 day partials and the filter bar extracted")

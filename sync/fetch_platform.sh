@@ -24,6 +24,8 @@ get() {  # get URL FILE
 
 get "$API/events/agenda?$SCOPE" "$OUT/agenda.json"
 get "$API/event-speakers?$SCOPE" "$OUT/speakers.json"
+get "$API/event-topic-groups?$SCOPE" "$OUT/topic-groups.json"
+get "$API/event-topics?$SCOPE" "$OUT/topics.json"
 python3 -I -c 'import json,sys; [print(e["id"]) for e in json.load(open(sys.argv[1]))]' "$OUT/agenda.json" > "$OUT/ids.txt"
 while read -r id; do get "$API/events/$id?$SCOPE" "$OUT/events/$id.json"; done < "$OUT/ids.txt"
 echo "platform: $(wc -l < "$OUT/ids.txt") sessions fetched"

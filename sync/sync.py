@@ -3,7 +3,8 @@ the IACC participant platform (iacc.conference.tc), which is the source of truth
 
     python3 -I sync/sync.py WORK
 
-Reads   WORK/platform/  agenda.json, speakers.json, events/<id>.json   (sync/fetch_platform.sh)
+Reads   WORK/platform/  agenda.json, speakers.json, events/<id>.json,
+                        topic-groups.json, topics.json             (sync/fetch_platform.sh)
         WORK/live/      the embed's current files                       (sync/fetch_embed.sh)
 Writes  WORK/out/       the updated files, same paths as on the site
         WORK/patches.json          {site path: [{find, replace}, ...]} in apply order
@@ -15,7 +16,7 @@ platform data looks wrong, e.g. half the sessions missing) — needs a person.
 
 Only the content the platform owns is rewritten: times, titles, session types and
 themes, descriptions whose wording really changed, speakers, job titles, photos and
-bios. Editorial cleanup on the embed (tidied descriptions, hand-written speaker lists'
+bios, and the filter groups (their names, order and chips). Editorial cleanup on the embed (tidied descriptions, hand-written speaker lists'
 layout) is left alone, and nothing on iacc.conference.tc is ever written to.
 """
 import base64, collections, datetime, difflib, glob, hashlib, html, json, os, re, sys, unicodedata
@@ -53,11 +54,14 @@ def jsobj(text): return json.loads(text[text.index("{"): text.rindex("}") + 1])
 # ---------------------------------------------------------------- platform data
 agenda = json.load(open(f"{PLAT}/agenda.json"))
 speakers = json.load(open(f"{PLAT}/speakers.json"))
+topic_groups = json.load(open(f"{PLAT}/topic-groups.json"))
+topics = json.load(open(f"{PLAT}/topics.json"))
 details = {}
 for f in glob.glob(f"{PLAT}/events/*.json"):
     e = json.load(open(f)); details[e["id"]] = e
 
-live_files = {p: read(f"{LIVE}/{p}") for p in PARTIALS + DATA_FILES}
+FILTERS = "_partials/agenda-filters.html"
+live_files = {p: read(f"{LIVE}/{p}") for p in PARTIALS + DATA_FILES + [FILTERS]}
 live_sessions = sum(live_files[p].count('<li class="session"') for p in PARTIALS)
 
 # Refuse obviously broken input rather than wiping the agenda.
@@ -408,6 +412,56 @@ def make_patches(a, b):
     assert x == b
     return out
 
+# ---------------------------------------------------------------- filter bar
+# Groups and chips follow the platform's own order (weights) and names. The Day group and
+# the search box stay as they are. Only topics that at least one session uses get a chip.
+ROOM_PREFIX = "Room Location:"
+def room_value(title):  # same slug js/agenda.js reads off the room tag's class
+    return re.match(r"[a-z0-9-]*", slug(title)[len("room-location-"):]).group(0)
+used = {t["id"] for e in agenda for t in e["event_topics"]}
+groups_html = []
+for g in sorted(topic_groups, key=lambda g: g["weight"]):
+    ts = sorted([t for t in topics if t["event_topic_group_id"] == g["id"] and t["id"] in used and not t.get("deleted_at")],
+                key=lambda t: t["weight"])
+    if not ts: continue
+    titles = [t["title"].strip() for t in ts]
+    if any(x.startswith(ROOM_PREFIX) for x in titles):
+        facet, chips = "room", [(room_value(x), x[len(ROOM_PREFIX):].strip()) for x in titles]
+    elif any(x in TYPE for x in titles):
+        facet, chips = "type", [(TYPE[x], x) for x in titles if x in TYPE]
+        for x in titles:
+            if x not in TYPE: report["Filters"].append(f"“{x}” is a session type on the platform but not on the embed yet — it needs a colour; ask Claude to add it")
+    else:
+        facet, chips = "theme", [(slug(x), x) for x in titles]
+    groups_html.append(f'  <div class="filter-group">\n    <span class="filter-label">{esc(g["title"].strip())}</span>\n'
+                       f'    <div class="filter-chips" data-filter-facet="{facet}">\n'
+                       + "".join(f'      <button type="button" class="chip" data-value="{esc(v)}">{esc(lab)}</button>\n' for v, lab in chips)
+                       + "    </div>\n  </div>\n")
+src = live_files[FILTERS]
+grp = r'  <div class="filter-group">\n    <span class="filter-label">.*?</span>\n    <div class="filter-chips" data-filter-facet="(\w+)">\n.*?    </div>\n  </div>\n'
+old_groups = list(re.finditer(grp, src, re.S))
+assert old_groups and old_groups[0].group(1) == "day", "filter bar: Day group not where expected"
+between = src[old_groups[0].end():old_groups[-1].end()]
+assert not re.sub(grp, "", between, flags=re.S).strip(), "filter bar: unexpected markup between filter groups"
+def summary(text):
+    return [(m.group(1), html.unescape(re.search(r'filter-label">(.*?)<', m.group(0)).group(1)),
+             [html.unescape(x) for x in re.findall(r'>([^<]+)</button>', m.group(0))]) for m in re.finditer(grp, text, re.S)][1:]
+new_filters = src[:old_groups[0].end()] + "\n" + "\n".join(groups_html) + "\n" + src[old_groups[-1].end():].lstrip("\n")
+was, now = summary(src), summary(new_filters)
+if was != now:
+    for f, label, chips in now:
+        before = next((c for f2, l2, c in was if f2 == f), None)
+        old_label = next((l2 for f2, l2, c in was if f2 == f), None)
+        if before is None: report["Filters"].append(f"New filter group “{label}”: {', '.join(chips)}")
+        else:
+            if old_label != label: report["Filters"].append(f"Filter group “{old_label}” renamed “{label}”")
+            if before != chips: report["Filters"].append(f"“{label}” chips now: {', '.join(chips)}")
+    if [f for f, _, _ in was] != [f for f, _, _ in now]:
+        report["Filters"].append("Filter groups now in this order: " + ", ".join(l for _, l, _ in now))
+    for f, label, _ in was:
+        if f not in [x for x, _, _ in now]: report["Filters"].append(f"Filter group “{label}” removed (not on the platform)")
+    new_files[FILTERS] = new_filters
+
 patches, expected = {}, {}
 for path, text in new_files.items():
     text = nfc(text)
@@ -426,7 +480,7 @@ if not patches:
     lines.append("No differences: the embed already matches iacc.conference.tc.")
 else:
     lines.append("Files to update: " + ", ".join(f"`{p}` ({len(v)} edits)" for p, v in patches.items()))
-    for k in ["Times", "Order", "Titles", "New sessions", "Removed sessions", "Descriptions", "Session line-ups changed",
+    for k in ["Times", "Order", "Filters", "Titles", "New sessions", "Removed sessions", "Descriptions", "Session line-ups changed",
               "Speakers added", "Speakers removed", "Job titles", "Photos added", "Photos changed", "Photos removed",
               "Bios added", "Bios updated", "Bios removed"]:
         if report[k]:
