@@ -61,6 +61,6 @@ run and `MANIFEST.json`.
 - **Quickest:** Lanlan `restore_snapshot` with `lanlan_deployment_id_to_restore` from
   that folder's `MANIFEST.json` (Lanlan keeps the last 20 deploys).
 - **If that deploy is no longer kept:** upload the backup's files with Lanlan
-  `update_file`, one per path: `_partials/agenda-day-1.html` … `-4.html`, `js/*.js`
+  `update_file`, one per path: `_partials/agenda-day-1.html` … `-4.html`, `_partials/agenda-filters.html`, `js/*.js`
   and `data/*.json`. (`embed.html` in the backup is the published page for reference;
   the site's own `embed.html` is a template and shouldn't be overwritten with it.)
