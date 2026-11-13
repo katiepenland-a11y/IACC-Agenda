@@ -189,6 +189,9 @@ def update_li(li, e, day):
     cur = re.search(r'data-type="([^"]*)"', li).group(1).split()
     types = [t for t in cur if t in types] + [t for t in types if t not in cur]
     li = re.sub(r'data-type="[^"]*"', f'data-type="{" ".join(types)}"', li, count=1)
+    # keep the embed's tag order when only the platform's ordering changed
+    shown = [slug(html.unescape(x)) for x in re.findall(r'<span class="tag tag-theme [^"]*">(.*?)</span>', li)]
+    themes = sorted(themes, key=lambda t: shown.index(slug(t)) if slug(t) in shown else len(shown))
     cur_th = re.search(r'data-themes="([^"]*)"', li).group(1).split()
     want_th = [slug(t) for t in themes]
     if set(cur_th) != set(want_th):
