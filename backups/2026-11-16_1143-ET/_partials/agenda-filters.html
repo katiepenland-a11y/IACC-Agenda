@@ -1,0 +1,64 @@
+<div class="agenda-filters">
+  <div class="filter-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="search" id="session-search" placeholder="Search sessions" aria-label="Search sessions">
+  </div>
+
+  <div class="filter-group">
+    <span class="filter-label">Day</span>
+    <div class="filter-chips" data-filter-facet="day">
+      <button type="button" class="chip" data-value="1">Tue 1 Dec</button>
+      <button type="button" class="chip" data-value="2">Wed 2 Dec</button>
+      <button type="button" class="chip" data-value="3">Thu 3 Dec</button>
+      <button type="button" class="chip" data-value="4">Fri 4 Dec</button>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <span class="filter-label">Session Type</span>
+    <div class="filter-chips" data-filter-facet="type">
+      <button type="button" class="chip" data-value="plenary">Plenary</button>
+      <button type="button" class="chip" data-value="workshop">Workshop</button>
+      <button type="button" class="chip" data-value="cinema">Film Festival</button>
+      <button type="button" class="chip" data-value="concert">Concert</button>
+      <button type="button" class="chip" data-value="networking">Social Event</button>
+      <button type="button" class="chip" data-value="high-level-dialogue">High Level Dialogue</button>
+      <button type="button" class="chip" data-value="break">Break</button>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <span class="filter-label">Search by Room</span>
+    <div class="filter-chips" data-filter-facet="room">
+      <button type="button" class="chip" data-value="bar-higuey">Bar Higuey</button>
+      <button type="button" class="chip" data-value="carpa-1">Carpa 1</button>
+      <button type="button" class="chip" data-value="carpa-2">Carpa 2</button>
+      <button type="button" class="chip" data-value="carpa-3">Carpa 3</button>
+      <button type="button" class="chip" data-value="carpa-4">Carpa 4</button>
+      <button type="button" class="chip" data-value="gran-b">Gran Bávaro</button>
+      <button type="button" class="chip" data-value="mallorca-1">Mallorca 1</button>
+      <button type="button" class="chip" data-value="punta-cana-1">Punta Cana 1</button>
+      <button type="button" class="chip" data-value="punta-cana-2">Punta Cana 2</button>
+      <button type="button" class="chip" data-value="santo-domingo">Santo Domingo</button>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <span class="filter-label">Thematic Tracks</span>
+    <div class="filter-chips" data-filter-facet="theme">
+      <button type="button" class="chip" data-value="business-integrity">Business Integrity</button>
+      <button type="button" class="chip" data-value="corruption-conflict-and-security">Corruption, Conflict, and Security</button>
+      <button type="button" class="chip" data-value="defending-democracy-and-freedoms">Defending Democracy and Freedoms</button>
+      <button type="button" class="chip" data-value="planet-regeneration">Planet Regeneration</button>
+      <button type="button" class="chip" data-value="protecting-people">Protecting People</button>
+      <button type="button" class="chip" data-value="strategy-session">Strategy Session</button>
+      <button type="button" class="chip" data-value="tech-innovation">Tech Innovation</button>
+      <button type="button" class="chip" data-value="youth-action">Youth Action</button>
+    </div>
+  </div>
+
+  <div class="filter-status">
+    <span id="filter-count"></span>
+    <button type="button" id="filter-clear" class="filter-clear" hidden>Clear filters</button>
+  </div>
+</div>

@@ -3,7 +3,7 @@ the IACC participant platform (iacc.conference.tc), which is the source of truth
 
     python3 -I sync/sync.py WORK
 
-Reads   WORK/platform/  agenda.json, speakers.json, events/<id>.json,
+Reads   WORK/platform/  agenda.json, speakers.json, events/<id>.json, descriptions/<id>.json,
                         topic-groups.json, topics.json             (sync/fetch_platform.sh)
         WORK/live/      the embed's current files                       (sync/fetch_embed.sh)
 Writes  WORK/out/       the updated files, same paths as on the site
@@ -59,6 +59,26 @@ topics = json.load(open(f"{PLAT}/topics.json"))
 details = {}
 for f in glob.glob(f"{PLAT}/events/*.json"):
     e = json.load(open(f)); details[e["id"]] = e
+
+def page_text(res):  # plain text of a session page's text blocks, paragraphs split by blank lines
+    paras = []
+    def para(n):
+        if n.get("type") == "text": return n.get("text", "")
+        if n.get("type") == "hard_break": return " "
+        return "".join(para(c) for c in n.get("content") or [])
+    def walk(r):
+        for rc in r.get("resource_contents") or []:
+            if isinstance(rc.get("content"), dict):
+                paras.extend(para(p) for p in rc["content"].get("content") or [] if p.get("type") == "paragraph")
+        for c in sorted(r.get("children") or [], key=lambda c: c.get("weight") or 0): walk(c)
+    walk(res)
+    return "\n\n".join(p.strip() for p in paras if p.strip())
+
+# no short description: use the text on the session page, as the platform shows it
+for e in details.values():
+    rid = e.get("description_resource_id")
+    if not (e.get("short_description") or "").strip() and rid and os.path.exists(f"{PLAT}/descriptions/{rid}.json"):
+        e["short_description"] = page_text(json.load(open(f"{PLAT}/descriptions/{rid}.json")))
 
 FILTERS = "_partials/agenda-filters.html"
 live_files = {p: read(f"{LIVE}/{p}") for p in PARTIALS + DATA_FILES + [FILTERS]}
