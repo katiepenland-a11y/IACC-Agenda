@@ -50,7 +50,7 @@ def page_text(res):  # text blocks of a session page, in page order
         for c in sorted(r.get("children") or [], key=lambda c: c.get("weight") or 0): walk(c)
     walk(res); return "\n\n".join(t for t in out if t)
 
-def tz_of(e): return ZoneInfo(e.get("timezone") or "Asia/Bangkok")
+def tz_of(e): return ZoneInfo(e.get("timezone_selected") or e.get("timezone") or "Asia/Bangkok")
 def local(ts, tz): return datetime.datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone(tz)
 
 by_event = collections.defaultdict(list)
