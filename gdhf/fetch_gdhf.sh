@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Read-only download of the GDHF 2026 agenda from gdhf.conference.tc.
+# Only GET requests are made; nothing on the platform is changed.
+#   gdhf/fetch_gdhf.sh WORK      needs GDHF_COOKIE (the _wfro login cookie for gdhf.conference.tc)
+# Exit 3 if the cookie is missing, expired or rejected; exit 4 on network trouble.
+set -euo pipefail
+W="$1"; OUT="$W/platform"; mkdir -p "$OUT/events" "$OUT/descriptions"
+API="https://gdhf.conference.tc/api/v2"
+SCOPE="scope=session&scope_id=5f3f621d-a8d2-4c79-affd-c8921396c53a"   # GDHF 2026
+[ -n "${GDHF_COOKIE:-}" ] || { echo "GDHF_COOKIE is not set" >&2; exit 3; }
+
+get() {  # get URL FILE
+  local code
+  for attempt in 1 2 3; do
+    code=$(curl -sS -X GET -o "$2" -w '%{http_code}' -H "Cookie: _wfro=$GDHF_COOKIE" -H "Accept: application/json" "$1" || echo 000)
+    case "$code" in
+      200) return 0 ;;
+      401|403) echo "platform refused the login cookie (HTTP $code) for $1 — GDHF_COOKIE needs renewing" >&2; exit 3 ;;
+    esac
+    sleep $((attempt * 3))
+  done
+  echo "could not fetch $1 (HTTP $code)" >&2; exit 4
+}
+
+get "$API/events/agenda?$SCOPE" "$OUT/agenda.json"
+get "$API/event-speakers?$SCOPE" "$OUT/speakers.json"
+get "$API/event-topic-groups?$SCOPE" "$OUT/topic-groups.json"
+get "$API/event-topics?$SCOPE" "$OUT/topics.json"
+python3 -I -c 'import json,sys; [print(e["id"]) for e in json.load(open(sys.argv[1]))]' "$OUT/agenda.json" > "$OUT/ids.txt"
+while read -r id; do get "$API/events/$id?$SCOPE" "$OUT/events/$id.json"; done < "$OUT/ids.txt"
+# sessions with no short description keep their text on the session page
+python3 -I -c 'import json,sys,glob
+for f in glob.glob(sys.argv[1] + "/events/*.json"):
+    e = json.load(open(f))
+    if e.get("description_resource_id"): print(e["description_resource_id"])' "$OUT" | sort -u > "$OUT/description-ids.txt"
+while read -r id; do get "$API/resources/$id?$SCOPE" "$OUT/descriptions/$id.json"; done < "$OUT/description-ids.txt"
+echo "platform: $(wc -l < "$OUT/ids.txt") sessions fetched"

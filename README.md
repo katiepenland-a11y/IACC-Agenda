@@ -23,3 +23,8 @@ sync/fetch_platform.sh "$WORK" && sync/fetch_embed.sh "$WORK" && python3 -I sync
 `IACC_COOKIE` is the platform's `_wfro` login cookie. It expires about 30 days after it
 was issued (the current one around 4 November 2026); when it does, runs stop and report
 it, and a fresh value has to be set in the environment.
+
+## GDHF 2026
+
+`gdhf/` pulls the full GDHF 2026 agenda (sessions, tags, speakers with bios and photos)
+from gdhf.conference.tc. See [`gdhf/README.md`](gdhf/README.md); it needs `GDHF_COOKIE`.
