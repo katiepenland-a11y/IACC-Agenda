@@ -1,7 +1,7 @@
 """Bring the Lanlan agenda embed (conference-agenda.lanlan.site/embed) in line with
 the IACC participant platform (iacc.conference.tc), which is the source of truth.
 
-    python3 -I sync/sync.py WORK
+    python3 -I sync/sync.py WORK [--allow-many]
 
 Reads   WORK/platform/  agenda.json, speakers.json, events/<id>.json, descriptions/<id>.json,
                         topic-groups.json, topics.json             (sync/fetch_platform.sh)
@@ -13,6 +13,8 @@ Writes  WORK/out/       the updated files, same paths as on the site
 
 Exit 0: nothing to change. Exit 10: changes ready to apply. Exit 2: refused (the
 platform data looks wrong, e.g. half the sessions missing) — needs a person.
+--allow-many: a person has checked that a large batch of added/removed sessions is
+real; skip the too-many-sessions refusal for this run only.
 
 Only the content the platform owns is rewritten: times, titles, session types and
 themes, descriptions whose wording really changed, speakers, job titles, photos and
@@ -22,6 +24,8 @@ layout) is left alone, and nothing on iacc.conference.tc is ever written to.
 import base64, collections, datetime, difflib, glob, hashlib, html, json, os, re, sys, unicodedata
 
 W = sys.argv[1]
+# a person has checked a large batch of new/removed sessions on the platform and approved it
+ALLOW_MANY = "--allow-many" in sys.argv[2:]
 PLAT, LIVE, OUT = f"{W}/platform", f"{W}/live", f"{W}/out"
 TODAY = datetime.date.today().isoformat()
 DAYS = range(1, 5)
@@ -31,7 +35,8 @@ PARTIALS = [f"_partials/agenda-day-{d}.html" for d in DAYS]
 DATA_FILES = ["js/speakers-data.js", "js/speakers-photos.js"] + [f"data/speaker-bios-{i}.json" for i in range(1, 5)]
 
 TYPE = {"Workshop": "workshop", "Break": "break", "Plenary": "plenary", "Film Festival": "cinema",
-        "Social Event": "networking", "Concert": "concert", "High Level Dialogue": "high-level-dialogue"}
+        "Social Event": "networking", "Concert": "concert", "High Level Dialogue": "high-level-dialogue",
+        "COLPIN": "colpin"}
 TYPE_LABEL = {v: k for k, v in TYPE.items()}
 PALETTE = ["#F59B00", "#69A525", "#98211E", "#507A8E", "#1EAFE1", "#878278", "#5D7D8F"]
 
@@ -270,10 +275,12 @@ for d in DAYS:
     for idx, li in pool:
         report["Removed sessions"].append(f"Day {d}: {' '.join(li_title(li).split())} ({li_start(li)})")
     # new sessions go after the last session that starts no later than they do
-    for e in pending:
+    # (placed against the existing sessions only; several new ones in a slot keep the platform's order)
+    existing = list(slots)
+    for i, e in enumerate(pending):
         st = local(e["start_time"]); m = st.hour * 60 + st.minute
-        before = [k for k, li in slots if minutes(li_start(li)) <= m]
-        slots.append(((max(before) if before else -1) + 0.5, new_li(e)))
+        before = [k for k, li in existing if minutes(li_start(li)) <= m]
+        slots.append(((max(before) if before else -1) + 0.5 + i / 1000, new_li(e)))
         report["New sessions"].append(f"Day {d}: {' '.join(e['title'].split())} ({clock(st)})")
     # keep the day in start-time order; sessions that start together keep the embed's order
     slots.sort(key=lambda s: s[0])
@@ -285,7 +292,7 @@ for d in DAYS:
     slots.sort(key=lambda s: minutes(li_start(s[1])))
     new_files[f"_partials/agenda-day-{d}.html"] = src[:a] + "".join(li for _, li in slots) + src[b:]
 
-if len(report["Removed sessions"]) + len(report["New sessions"]) > max(10, 0.15 * live_sessions):
+if not ALLOW_MANY and len(report["Removed sessions"]) + len(report["New sessions"]) > max(10, 0.15 * live_sessions):
     write(f"{W}/report.md", "# Sync refused\n\nToo many sessions would be added or removed at once — check the platform.\n\n"
           + "\n".join(f"- {x}" for x in report["Removed sessions"] + report["New sessions"]) + "\n")
     print("REFUSED: too many sessions added/removed"); sys.exit(2)

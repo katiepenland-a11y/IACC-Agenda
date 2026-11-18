@@ -35,6 +35,8 @@ Use a fresh work directory, e.g. `WORK=$(mktemp -d)`.
    - Exit 0: nothing to change. Go to step 7.
    - Exit 2: refused because the platform data looks wrong (`$WORK/report.md` says why).
      Change nothing; go to step 7 and report it.
+     Scheduled runs never override this. Only when a person has checked the platform and
+     approved a large batch of new or removed sessions, re-run with `--allow-many`.
    - Exit 10: changes are in `$WORK/patches.json`. Continue.
 5. **Apply:** for each file in `patches.json`, in the order listed, call Lanlan
    `patch_file` with `site_id` above, `path` = the file, and its `patches` exactly as
