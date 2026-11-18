@@ -121,14 +121,16 @@ def clean_desc(d):
     rap = None
     m = re.search(r"\s*Rapporteur:\s*(.+?)\s*$", d, re.S)
     if m: rap = " ".join(m.group(1).split()); d = d[:m.start()]
-    paras = [" ".join(p.split()) for p in re.split(r"\n\s*\n", d.strip()) if p.strip()]
+    # paragraphs split on blank lines; single line breaks inside a paragraph are kept
+    paras = ["\n".join(" ".join(l.split()) for l in p.split("\n") if l.strip())
+             for p in re.split(r"\n\s*\n", d.strip()) if p.strip()]
     return paras, rap
 
 def desc_html(raw):
     paras, rap = clean_desc(raw)
-    full = "<br><br>".join(esc(p) for p in paras)
+    full = "<br><br>".join(esc(p).replace("\n", "<br>") for p in paras)
     if rap: full += f" <em>Rapporteur: {esc(rap)}</em>"
-    plain = " ".join(paras)
+    plain = " ".join(paras).replace("\n", " ")
     short = esc(plain[:160].rsplit(" ", 1)[0].rstrip(",;:.–- ")) + "…" if len(plain) > 160 else esc(plain)
     return short, full, (plain + (f" Rapporteur: {rap}" if rap else ""))
 
