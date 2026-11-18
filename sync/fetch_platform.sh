@@ -28,11 +28,11 @@ get "$API/event-topic-groups?$SCOPE" "$OUT/topic-groups.json"
 get "$API/event-topics?$SCOPE" "$OUT/topics.json"
 python3 -I -c 'import json,sys; [print(e["id"]) for e in json.load(open(sys.argv[1]))]' "$OUT/agenda.json" > "$OUT/ids.txt"
 while read -r id; do get "$API/events/$id?$SCOPE" "$OUT/events/$id.json"; done < "$OUT/ids.txt"
-# sessions with no short description keep their text on the session page instead
+# the text on each session's page (used when the short description is empty or a flattened copy of it)
 mkdir -p "$OUT/descriptions"
 python3 -I -c 'import json,sys,glob
 for f in glob.glob(sys.argv[1] + "/events/*.json"):
     e = json.load(open(f))
-    if not (e.get("short_description") or "").strip() and e.get("description_resource_id"): print(e["description_resource_id"])' "$OUT" > "$OUT/description-ids.txt"
+    if e.get("description_resource_id"): print(e["description_resource_id"])' "$OUT" > "$OUT/description-ids.txt"
 while read -r id; do get "$API/resources/$id?$SCOPE" "$OUT/descriptions/$id.json"; done < "$OUT/description-ids.txt"
 echo "platform: $(wc -l < "$OUT/ids.txt") sessions fetched"

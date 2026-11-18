@@ -69,7 +69,7 @@ def page_text(res):  # plain text of a session page's text blocks, paragraphs sp
     paras = []
     def para(n):
         if n.get("type") == "text": return n.get("text", "")
-        if n.get("type") == "hard_break": return " "
+        if n.get("type") == "hard_break": return "\n"
         return "".join(para(c) for c in n.get("content") or [])
     def walk(r):
         for rc in r.get("resource_contents") or []:
@@ -79,11 +79,16 @@ def page_text(res):  # plain text of a session page's text blocks, paragraphs sp
     walk(res)
     return "\n\n".join(p.strip() for p in paras if p.strip())
 
-# no short description: use the text on the session page, as the platform shows it
+# use the text on the session page when there's no short description, or when the short
+# description is only that text with its line breaks dropped (the platform makes it that way)
+def squashed(t): return re.sub(r"\s+", "", t or "")
 for e in details.values():
     rid = e.get("description_resource_id")
-    if not (e.get("short_description") or "").strip() and rid and os.path.exists(f"{PLAT}/descriptions/{rid}.json"):
-        e["short_description"] = page_text(json.load(open(f"{PLAT}/descriptions/{rid}.json")))
+    if not (rid and os.path.exists(f"{PLAT}/descriptions/{rid}.json")): continue
+    text = page_text(json.load(open(f"{PLAT}/descriptions/{rid}.json")))
+    short = (e.get("short_description") or "").strip()
+    if text and (not short or squashed(short) == squashed(text)):
+        e["short_description"] = text
 
 FILTERS = "_partials/agenda-filters.html"
 live_files = {p: read(f"{LIVE}/{p}") for p in PARTIALS + DATA_FILES + [FILTERS]}
