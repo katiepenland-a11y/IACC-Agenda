@@ -79,15 +79,43 @@ def page_text(res):  # plain text of a session page's text blocks, paragraphs sp
     walk(res)
     return "\n\n".join(p.strip() for p in paras if p.strip())
 
+def page_html(res):  # the same text as HTML, keeping the page's bold and italics; None if it has none
+    paras, styled = [], False
+    def inline(nodes):
+        nonlocal styled
+        out = ""
+        for n in nodes or []:
+            if n.get("type") == "hard_break": out += "<br>"; continue
+            if n.get("type") != "text": out += inline(n.get("content")); continue
+            t = esc(n.get("text", ""))
+            if not t.strip(): out += t; continue
+            for mk in n.get("marks") or []:
+                if mk["type"] == "bold": t = f"<strong>{t}</strong>"; styled = True
+                elif mk["type"] == "italic": t = f"<em>{t}</em>"; styled = True
+            out += t
+        return out
+    def walk(r):
+        for rc in r.get("resource_contents") or []:
+            if isinstance(rc.get("content"), dict):
+                paras.extend(inline(p.get("content")) for p in rc["content"].get("content") or [] if p.get("type") == "paragraph")
+        for c in sorted(r.get("children") or [], key=lambda c: c.get("weight") or 0): walk(c)
+    walk(res)
+    tidy = [re.sub(r"^(?:\s|<br>)+|(?:\s|<br>)+$", "", p) for p in paras]
+    return "<br><br>".join(p for p in tidy if re.sub(r"<[^>]+>", "", p).strip()) if styled else None
+
 # use the text on the session page when there's no short description, or when the short
-# description is only that text with its line breaks dropped (the platform makes it that way)
+# description is only that text with its line breaks dropped (the platform makes it that way);
+# if the page uses bold or italics, the embed shows them too
 def squashed(t): return re.sub(r"\s+", "", t or "")
 for e in details.values():
     rid = e.get("description_resource_id")
     if not (rid and os.path.exists(f"{PLAT}/descriptions/{rid}.json")): continue
-    text = page_text(json.load(open(f"{PLAT}/descriptions/{rid}.json")))
+    res = json.load(open(f"{PLAT}/descriptions/{rid}.json"))
+    text = page_text(res)
     short = (e.get("short_description") or "").strip()
     if text and (not short or squashed(short) == squashed(text)):
+        e["_page_text"] = text
+        e["_page_html"] = page_html(res)
         e["short_description"] = text
 
 FILTERS = "_partials/agenda-filters.html"
@@ -131,9 +159,17 @@ def clean_desc(d):
              for p in re.split(r"\n\s*\n", d.strip()) if p.strip()]
     return paras, rap
 
-def desc_html(raw):
+# page formatting is only used where the sync's tidy-up (form prompts, rapporteur line) has nothing to change
+for e in details.values():
+    if e.get("_page_html"):
+        t = e["_page_text"]
+        as_is = ["\n".join(" ".join(l.split()) for l in p.split("\n") if l.strip())
+                 for p in re.split(r"\n\s*\n", t.strip()) if p.strip()]
+        if clean_desc(t) != (as_is, None): e["_page_html"] = None
+
+def desc_html(raw, rich=None):
     paras, rap = clean_desc(raw)
-    full = "<br><br>".join(esc(p).replace("\n", "<br>") for p in paras)
+    full = rich or "<br><br>".join(esc(p).replace("\n", "<br>") for p in paras)
     if rap: full += f" <em>Rapporteur: {esc(rap)}</em>"
     plain = " ".join(paras).replace("\n", " ")
     short = esc(plain[:160].rsplit(" ", 1)[0].rstrip(",;:.–- ")) + "…" if len(plain) > 160 else esc(plain)
@@ -195,7 +231,7 @@ def new_li(e):
     body = f"<h3>{esc(' '.join(e['title'].split()))}</h3>"
     raw = details[e["id"]].get("short_description") or ""
     if clean_desc(raw)[0]:
-        short, full, _ = desc_html(raw)
+        short, full, _ = desc_html(raw, details[e["id"]].get("_page_html"))
         body += (f'<p class="session-desc"><span class="desc-short">{short}</span><span class="desc-full is-hidden">'
                  f'{full}</span></p><button type="button" class="desc-toggle">More</button>')
     body += f'<div class="session-tags">{tags_html(types, themes)}</div>'
@@ -230,12 +266,14 @@ def update_li(li, e, day):
         li = re.sub(r'data-themes="[^"]*"', f'data-themes="{" ".join(want_th)}"', li, count=1)
     li = re.sub(r'<div class="session-tags">.*?</div>', f'<div class="session-tags">{tags_html(types, themes)}</div>',
                 li, count=1, flags=re.S)
-    # descriptions: only when the wording really changed (keeps the embed's tidy-ups)
+    # descriptions: only when the wording really changed (keeps the embed's tidy-ups),
+    # or when the session page's bold/italic formatting differs from what the embed shows
     raw = details[e["id"]].get("short_description") or ""
+    rich = details[e["id"]].get("_page_html")
     m = re.search(r'<span class="desc-full is-hidden">(.*?)</span></p>', li, re.S)
     cur_text = html.unescape(re.sub(r"<[^>]+>", " ", m.group(1))) if m else ""
-    short, full, plain = desc_html(raw)
-    if not same_words(cur_text, plain) and clean_desc(raw)[0]:
+    short, full, plain = desc_html(raw, rich)
+    if clean_desc(raw)[0] and (not same_words(cur_text, plain) or (rich and m and nfc(m.group(1)) != nfc(full))):
         if m:
             li = re.sub(r'<span class="desc-short">.*?</span><span class="desc-full is-hidden">.*?</span></p>',
                         f'<span class="desc-short">{short}</span><span class="desc-full is-hidden">{full}</span></p>',
