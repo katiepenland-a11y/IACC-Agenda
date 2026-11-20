@@ -29,7 +29,7 @@ it, and a fresh value has to be set in the environment.
 Keeps the agenda on https://www.gdhf.digital/agenda-2026 (Lanlan site "gdhf-digital") matching the
 GDHF participant platform at https://gdhf.conference.tc/t/gdhf-2026/events/agenda (the source of
 truth): sessions that aren't invite-only, with their details, speakers, bios and photos. A scheduled
-Claude session runs it daily; the steps are in [`gdhf/RUNBOOK.md`](gdhf/RUNBOOK.md). It needs
+Claude session runs it twice a day (about 8 AM and 8 PM US Eastern); the steps are in [`gdhf/RUNBOOK.md`](gdhf/RUNBOOK.md). It needs
 `GDHF_COOKIE` (the gdhf.conference.tc `_wfro` login cookie).
 
 Run a check by hand (changes nothing):

@@ -1,6 +1,6 @@
 # GDHF daily agenda sync — runbook
 
-Followed by the scheduled Claude session every day. It keeps the agenda on
+Followed by the scheduled Claude session twice a day (about 8 AM and 8 PM US Eastern). It keeps the agenda on
 https://www.gdhf.digital/agenda-2026 (Lanlan site `9e98e5f0-dbc8-486c-b8e4-5d638b998b33`,
 "gdhf-digital") in line with the GDHF participant platform
 https://gdhf.conference.tc/t/gdhf-2026/events/agenda, which is the source of truth.
