@@ -1,0 +1,26 @@
+{
+ "taken": "2026-11-19_2137-ET",
+ "site": "https://www.gdhf.digital/agenda-2026",
+ "lanlan_site_id": "9e98e5f0-dbc8-486c-b8e4-5d638b998b33",
+ "lanlan_deployment_id_to_restore": "2c0be22a-ce41-41db-bec8-89e0c44ec201",
+ "files": {
+  "js/agenda-2026-app.js": "8c6780e411c3d96f4d1b151415dee0e291d9d634ad118785101fcc764d28b0f8",
+  "js/agenda-2026.js": "1a6a638054411b442da125aecd6818db2c57ee3b5267b72bced1945df98ad821",
+  "js/agenda-bios-1.js": "675af4c86241544c0460d28ce5fa522f31748950542f402b0a69769198c21909",
+  "js/agenda-bios-10.js": "61abd182c9e4e9113f5f2461b09dd9b0e114e6b64ad6ba74e61149073d95cf97",
+  "js/agenda-bios-11.js": "b5a3061613a6c09d0994e484b0146b5dad12d5b674db05801e483c14ad1f7ed8",
+  "js/agenda-bios-12.js": "646d00574e7fecec1fa6e346e6b89e566c9729b4a266b514e52acc275f68728a",
+  "js/agenda-bios-13.js": "e6397d19b760b48c24e1b413a0d4cdffb793ef6348e9ed551522beace381ba0c",
+  "js/agenda-bios-14.js": "19bd006b425a03f9775bffc963f5ce2a5e24e63ce4abd1c5c7f9a35669738d9d",
+  "js/agenda-bios-15.js": "d9f7372e0bd4c5c6a3e19a5df1457b76a5422caeaa4b4b9b8df48989b41cdcec",
+  "js/agenda-bios-2.js": "7e6b29a769c3dcf636f19bc42119f3bc4757bb325ea95a4f80f4f02600c15143",
+  "js/agenda-bios-3.js": "65f9713ed96ad55a17a22f3076d594228670a187dc1c2dba59c2344e3f4e5f78",
+  "js/agenda-bios-4.js": "3063f93f693abef9fd2966e18d59c46a4ba48ec8cd9a8152cb31fabf677abb54",
+  "js/agenda-bios-5.js": "09ac5a60074221d663066bfc50bb01e341d6e212d5401a6ce9a51dcd147aba6e",
+  "js/agenda-bios-6.js": "ab442bb7b1ccafa39f4c1f119c9d1f805f74237bbd806fea4549d6b7cef1d49b",
+  "js/agenda-bios-7.js": "1329bbe8e5daf8c446e52e7cf3721bc73a9c5b99d560f9734086ab3e375f6312",
+  "js/agenda-bios-8.js": "3a205b5ec9e3185b30898ef467f42b54d582eb149b9836d164265418588a7236",
+  "js/agenda-bios-9.js": "637f84180efbc0de41026fdd038fe0d6bb2ec5dd44a47ab94290f7e31077f376",
+  "js/agenda-photos.js": "ebe902a2f1cdfb473430e424092ab43126297b646f60162e35fc583b2d90ef9c"
+ }
+}
