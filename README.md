@@ -23,3 +23,18 @@ sync/fetch_platform.sh "$WORK" && sync/fetch_embed.sh "$WORK" && python3 -I sync
 `IACC_COOKIE` is the platform's `_wfro` login cookie. It expires about 30 days after it
 was issued (the current one around 4 November 2026); when it does, runs stop and report
 it, and a fresh value has to be set in the environment.
+
+## GDHF 2026 agenda sync (`gdhf/`)
+
+Keeps the agenda on https://www.gdhf.digital/agenda-2026 (Lanlan site "gdhf-digital") matching the
+GDHF participant platform at https://gdhf.conference.tc/t/gdhf-2026/events/agenda (the source of
+truth): sessions that aren't invite-only, with their details, speakers, bios and photos. A scheduled
+Claude session runs it daily; the steps are in [`gdhf/RUNBOOK.md`](gdhf/RUNBOOK.md). It needs
+`GDHF_COOKIE` (the gdhf.conference.tc `_wfro` login cookie).
+
+Run a check by hand (changes nothing):
+
+```sh
+WORK=$(mktemp -d)
+gdhf/fetch_platform.sh "$WORK" && gdhf/fetch_site.sh "$WORK" && python3 -I gdhf/build.py "$WORK"
+```
